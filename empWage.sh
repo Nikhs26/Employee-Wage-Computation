@@ -1,33 +1,54 @@
-#! /bin/bash
+#!/bin/bash
 
-isPartTime=1
-isFullTime=2
-maxHrsInMonth=10
+echo "Welcome to Employee Wage Computation"
+
+#check employee is present or absent
+
+#constant values
 empRatePerHr=20
-noWorkingDays=20
-totalEmpHr=0;
-totalWorkingDays=0;
+numberOfWorkingDays=20
+maxHrsInMonth=100
 
-function getWorkingHours(){
-case $1 in
-        $isPartTime)
-                empHrs=4
-                ;;
-        $isFullTime)
-                empHrs=8
-                ;;
-        *)
-                empHrs=0
-                ;;
-esac
-echo $empHrs
+#variables
+totalSalary=0
+totalEmpHr=0
+totalWorkingDays=0
+
+function getWorkingHours() {
+	empCheck=$(( RANDOM%3 + 1 ))
+	case $empCheck in
+		1)
+		empHrs=8
+		;;
+		2)
+		empHrs=4
+		;;
+		3)
+		empHrs=0
+		;;
+	esac
+	echo $empHrs
 }
 
-while [[ $totalEmpHr -lt $maxHrsInMonth && $totalWorkingDays -lt $noWorkingDays ]]
+function calculateDailyWage() {
+	local workHours=$1
+	wages=$(( $workHours * $empRatePerHr ))
+	echo $wages
+}
+
+while [[ $totalEmpHr -lt $maxHrsInMonth && $totalWorkingDays -lt $numberOfWorkingDays ]]
 do
-((totalWorkingDays++))
-workHrs=$( getWorkingHours $((RANDOM%3)) )
-totalEmpHr=$(($totalEmpHr+$workHrs))
+	(( totalWorkingDays++ ))
+	workingHours="$( getWorkingHours )"
+	totalWorkHrs=$(( $totalEmpHr + $workingHours ))
+	empDailyWage[$totalWorkingDays]="$( calculateDailyWage $workingHours )"
 done
-totalSalary=$(($totalEmpHr*$empRatePerHr))
-echo $totalSalary
+	#calculate wages per month
+	totalSalary="$( calculateDailyWage $totalWorkHrs )"
+	echo "Daily wage  ${empDailyWage[@]}"
+totalWage=0
+for i in ${empDailyWage[@]}
+do
+    totalWage=$(($totalWage+$i))
+done
+echo "Total Wage: $totalWage"
