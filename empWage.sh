@@ -1,13 +1,16 @@
-#! /bin/bash
+#! /bin/bash -x
 
 isPartTime=1
 isFullTime=2
-totalSalary=0
+maxHrsInMonth=10
 empRatePerHr=20
 noWorkingDays=20
+totalEmpHr=0;
+totalWorkingDays=0;
 
-for (( day=1; day<=$noWorkingDays; day++ ))
+while [[ $totalEmpHr -lt $maxHrsInMonth && $totalWorkingDays -lt $noWorkingDays ]]
 do
+((totalWorkingDays++))
 empCheck=$((RANDOM%3))
 
 case $empCheck in
@@ -21,7 +24,8 @@ case $empCheck in
 		empHrs=0
 		;;
 esac
-salary=$(($empHrs*$empRatePerHr))
-totalSalary=$(($totalSalary+$salary))
+
+totalEmpHr=$(($totalEmpHr+$empHrs))
 done
+totalSalary=$(($totalEmpHr*$empRatePerHr))
 echo $totalSalary
