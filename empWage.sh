@@ -5,15 +5,17 @@ isFullTime=2
 empRatePerHr=20
 empCheck=$((RANDOM%3))
 
-if [ $isPartTime -eq $empCheck ];
-then
-	empHrs=4
-elif [ $isFullTime -eq $empCheck ];
-then
-	empHrs=8
-else
-	empHrs=0
-fi
+case $empCheck in
+	$isPartTime)
+		empHrs=4
+		;;
+	$isFullTime)
+		empHrs=8
+		;;
+	*)
+		empHrs=0
+		;;
+esac
 
 salary=$(($empHrs*$empRatePerHr))
 echo $salary
