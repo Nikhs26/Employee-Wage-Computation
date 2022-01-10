@@ -2,7 +2,7 @@
 
 isPartTime=1
 isFullTime=2
-maxHrsInMonth=10
+maxHrsInMonth=100
 empRatePerHr=20
 noWorkingDays=20
 totalEmpHr=0;
